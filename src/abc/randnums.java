@@ -37,13 +37,13 @@ class Printing extends Thread{
             synchronized (sum){
                 while(ar != sum[0]){
                     try{
+                        ar = Math.random();
                         sum[0] = ar;
-                        sum.wait();
+                        sum.notify();
                     }catch(Exception e){
                         System.out.println("error");
                     }
                 }
-                sum[0] = ar;
                 sum.notify();
             }
         }
@@ -62,7 +62,7 @@ class Printing1 extends Thread{
                 while(ar == sum[0]){
                     try{
                         System.out.println(sum[0]);
-                        ar = Math.random();
+                        ar = 0;
                     }catch(Exception e){
                         System.out.println("error");
                     }
