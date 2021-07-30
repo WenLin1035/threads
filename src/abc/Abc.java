@@ -5,8 +5,10 @@
  */
 package abc;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,27 +38,29 @@ public class Abc {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         int k = 1;
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(3);
         for(int i=0;i<12;i++){
             switch(k){
                 case 1:
                     Print1 p1 = new Print1("A");
-                    p1.start();
-                    p1.join();
+                    Future<String> future = (Future<String>) executor.submit(p1);
+                    future.get();
                     k++;
                 case 2:
                     p1 = new Print1("B");
-                    p1.start();
-                    p1.join();
+                    future = (Future<String>) executor.submit(p1);
+                    future.get();
                     k++;
                 case 3:
                     p1 = new Print1("C");
-                    p1.start();
-                    p1.join();
+                    future = (Future<String>) executor.submit(p1);
+                    future.get();
                     k=1;
             }
         }
+        executor.shutdown();
     }
     
 }
